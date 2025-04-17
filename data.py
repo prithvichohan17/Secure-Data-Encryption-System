@@ -1,4 +1,3 @@
-
 from unittest import result
 from altair import Key
 import streamlit as st
@@ -31,13 +30,15 @@ if "lockout_time" not in st.session_state:
 
 # === if data is load ===
 def load_data():
-    if os .pat.exists(DATA_FILE):
+    if os .path.exists(DATA_FILE):
         with open (DATA_FILE,"r") as f:
             return  json.load(f)
-        return {}
+    return {}
+
 def save_data(data):
-        with open (DATA_FILE,"w")as f:
+        with open (DATA_FILE,"w") as f:
             json.dump(data,f)
+
 def generate_key(passkey):
             key = pbkdf2_hmac('sha256', passkey.encode(),SALT,100000)
             return urlsafe_b64encode(key)
@@ -64,7 +65,7 @@ menu =["Home","Register","Login","Store Data","Retrieve Data"]
 choice = st.sidebar.selectbox("Navigaation", menu)
 
 if choice == "Home":
-     st.subheader("welcome To My 🔐 Data Encryption system Using stramlit !")
+     st.subheader("welcome To My 🔐 Data Encryption system Using stramlit")
      st.markdown("Develop a Streamlit-based secure data storage and retrieval system where:" \
      "Users store data with a unique passkey." \
      "Users decrypt data by providing the correct passkey." \
@@ -94,12 +95,12 @@ elif choice == "Register":
         st.subheader("🔑 User-login")
          
         if time.time() <st.session_state.lockout_time:
-            remaining = int(st.session_state.lockout_time)
+            remaining = int(st.session_state.lockout_time -time.time())
             st.error(f"⏱️ Too many failed attempts. please wait {remaining} second.")
-
-        username = st.text_input("Username")
-        password = st.text_input("password", type="password")
-
+        else:
+              username = st.text_input("Username")
+              password = st.text_input("password", type="password")
+             
         if st.button("login"):
             if username in stored_data and stored_data [username]["password"] == hash_password(password):
                   st.session_state.authenticated_user = username
@@ -117,10 +118,10 @@ elif choice == "Register":
 
 # === data store section 
 elif choice == "Store Data":
-    if not st.seccion_state.authenticated_user:
-          st.warning("🔐 please login frist.")
+    if  not st.seccion_state.authenticated_user:
+        st.warning("🔐 please login frist.")
     else:
-         st.subheader(" 📦S tore Encrpyted Data ")
+         st.subheader(" 📦Store Encrpyted Data ")
          data = st.text_area("Enter data to encrpty")
          passkey = st.text_input("Encryption key (passphrease)", type="password")
 
@@ -138,8 +139,10 @@ elif choice == "Store Data":
 elif choice == "Retieve Data":
     if not st.session_state.authenticated_user:
           st.warning("please login frist")
-    else: st.subheader("🔎 Retieve data")
-    user_data = stored_data.get(st.session_state.authenicated_user,{}).get("data",[])
+        
+    else:
+        st.subheader("🔎 Retieve data")
+        user_data = stored_data.get(st.session_state.authenicated_user,{}).get("data",[])
 
     if not user_data:
          st.info("No data Found!")
@@ -154,5 +157,3 @@ elif choice == "Retieve Data":
              st.success(f"Decrypted: {result}")
         else:
              st.error("❌ Incorrect passkey or corrupted data.")
-
-                
