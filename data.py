@@ -15,7 +15,18 @@ SALT = b"secure_salt_value"
 
 LOCKOUT_DURATUON = 60
 
+st.markdown{
+     """
+  <style>
+  <image src="" alt="" weight="" > </image>
+  
+  
+  </style>
 
+
+
+"""
+}
 # === section login details ===
 
 if "authenticated_user" not in st.session_state:
@@ -23,10 +34,10 @@ if "authenticated_user" not in st.session_state:
 
     
 if "failed_attempts" not in st.session_state:
-    st.session_state.failed_attempts = None 
+    st.session_state.failed_attempts = 0
 
 if "lockout_time" not in st.session_state:
-    st.session_state.lockout_time = None 
+    st.session_state.lockout_time = 0 
 
 # === if data is load ===
 def load_data():
