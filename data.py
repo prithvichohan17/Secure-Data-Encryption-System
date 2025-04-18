@@ -14,19 +14,6 @@ DATA_FILE = "secure_data.json"
 SALT = b"secure_salt_value"
 
 LOCKOUT_DURATUON = 60
-
-st.markdown{
-     """
-  <style>
-  <image src="" alt="" weight="" > </image>
-  
-  
-  </style>
-
-
-
-"""
-}
 # === section login details ===
 
 if "authenticated_user" not in st.session_state:
